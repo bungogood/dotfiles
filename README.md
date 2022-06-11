@@ -12,6 +12,12 @@ This repository contains dotfile used for system config. Using the config alias 
 curl -Lks https://raw.githubusercontent.com/Bungogood/dotfiles/master/.bin/install.sh | /bin/bash
 ```
 
+## Brewfile
+
+```sh
+brew bundle
+```
+
 ## References
 
 - https://www.atlassian.com/git/tutorials/dotfiles
