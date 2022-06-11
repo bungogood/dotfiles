@@ -1,0 +1,3 @@
+FROM alpine
+RUN apk add --no-cache git bash curl ncurses 
+ENTRYPOINT ["/bin/bash", "-c", "curl -Lks https://raw.githubusercontent.com/Bungogood/dotfiles/master/.bin/install.sh | /bin/bash && /bin/bash"]
