@@ -82,6 +82,7 @@ PS1="\[${Red}\]\u\[${NC}\]@\[${Blue}\]\h\[${NC}\] "
 PS1=${PS1}"\[${NC}\]\W\[${NC}\] "
 # "(branch )$ "
 PS1=${PS1}"\[${Red}\]\$(parse_git_branch)\[${NC}\]$ "
+export PS1
 
 # If this is an xterm set the title to user@host:dir
 # case "$TERM" in
@@ -91,8 +92,6 @@ PS1=${PS1}"\[${Red}\]\$(parse_git_branch)\[${NC}\]$ "
 # *)
 #     ;;
 # esac
-
-LS_COLORS=$LS_COLORS:'ln=1;33'
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -128,6 +127,9 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+LS_COLORS=$LS_COLORS:'ln=1;33'
+export LS_COLORS
 
 docker() {
     if [[ $1 == "tmp" ]]; then
