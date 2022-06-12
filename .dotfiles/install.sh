@@ -2,7 +2,7 @@ git clone --bare https://github.com/Bungogood/dotfiles.git $HOME/.dotfiles
 function config {
    /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME $@
 }
-mkdir -p .config-backup
+mkdir -p .dotfiles-backup
 config checkout
 if [ $? = 0 ]; then
   echo "Checked out config.";
