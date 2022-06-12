@@ -12,6 +12,13 @@ This repository contains dotfile used for system config. Using the config alias 
 curl -Lks https://raw.githubusercontent.com/Bungogood/dotfiles/master/.dotfiles/install.sh | /bin/bash
 ```
 
+## Docker
+
+```sh
+docker build -t dotfiles ~/.dotfiles
+docker run --rm -it dotfiles
+```
+
 ## References
 
 - https://www.atlassian.com/git/tutorials/dotfiles
