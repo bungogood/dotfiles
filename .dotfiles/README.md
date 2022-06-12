@@ -23,3 +23,4 @@ docker run --rm -it dotfiles
 
 - https://www.atlassian.com/git/tutorials/dotfiles
 - https://bitbucket.org/durdn/cfg.git
+- https://askubuntu.com/questions/466198/how-do-i-change-the-color-for-directories-with-ls-in-the-console

@@ -92,6 +92,8 @@ PS1=${PS1}"\[${Red}\]\$(parse_git_branch)\[${NC}\]$ "
 #     ;;
 # esac
 
+LS_COLORS=$LS_COLORS:'ln=1;33'
+
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
