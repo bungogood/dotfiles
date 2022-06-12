@@ -12,3 +12,4 @@ if [ $? = 0 ]; then
 fi;
 config checkout
 config config status.showUntrackedFiles no
+rm $HOME/README.md
