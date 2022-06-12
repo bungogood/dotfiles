@@ -142,6 +142,6 @@ my_ip() {
 
 alias config="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 
-echo "$(my_ip)"
+my_ip
 echo 
-echo "$(date)"
+date
