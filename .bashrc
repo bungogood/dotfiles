@@ -77,7 +77,7 @@ parse_git_branch() {
 }
 
 # "username@machine "
-PS1="\[${Red}\]\u\[${NC}\]@\[${Blue}\]\h\[${NC}\] "
+PS1="\[${Red}\]\u\[${NC}\]@\[${Cyan}\]\h\[${NC}\] "
 # "dir "
 PS1=${PS1}"\[${NC}\]\W\[${NC}\] "
 # "(branch )$ "
