@@ -34,6 +34,8 @@ On_White='\e[47m'       # White
 
 NC="\e[m"               # Color Reset
 
+LightRed='\e[38;5;9m'   # LightRed
+
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
@@ -77,11 +79,11 @@ parse_git_branch() {
 }
 
 # "username@machine "
-PS1="\[${Red}\]\u\[${NC}\]@\[${Cyan}\]\h\[${NC}\] "
+PS1="\[${LightRed}\]\u\[${NC}\]@\[${Cyan}\]\h\[${NC}\] "
 # "dir "
 PS1=${PS1}"\[${NC}\]\W\[${NC}\] "
 # "(branch )$ "
-PS1=${PS1}"\[${Red}\]\$(parse_git_branch)\[${NC}\]$ "
+PS1=${PS1}"\[${LightRed}\]\$(parse_git_branch)\[${NC}\]$ "
 export PS1
 
 # If this is an xterm set the title to user@host:dir
