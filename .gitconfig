@@ -1,9 +1,9 @@
 [core]
-  editor = /usr/bin/nano
+    editor = /usr/bin/nano
 
 [user]
-	name = Bungogood
-	email = github@bungogood.com
+    name = Bungogood
+    email = github@bungogood.com
 
 [color]
     branch = auto
@@ -28,9 +28,10 @@
     untracked = cyan
 
 [alias]
-	branch = branch -ra
-	cm = commit -m
-  ca = commit --amend
+    branch = branch -ra
+    pop = stash pop
+    cm = commit -m
+    ca = commit --amend
 
 [credential]
-	helper = manager
+    helper = manager
