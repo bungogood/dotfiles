@@ -12,7 +12,8 @@ This repository contains dotfile used for system config. Using the config alias 
 curl -Lks https://raw.githubusercontent.com/Bungogood/dotfiles/master/.dotfiles/install.sh | /bin/bash
 ```
 
-## Docker
+## Docker Preview
+This runs the install script in an alpine container to test the install and any changes.
 
 ```sh
 docker build -t dotfiles ~/.dotfiles
