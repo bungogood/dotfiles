@@ -27,10 +27,16 @@ config pull
 ```
 
 ## Docker Preview
-This runs the install script in an alpine container to test the install and any changes.
 
+This creates an alpine container with curl and git, with the entrypoint running the `install.sh` script from this repository. Therefore the container only needs to be built once and can then be used to test any changes.
+
+### Build
 ```sh
 docker build -t dotfiles ~/.dotfiles
+```
+
+### Usage
+```sh
 docker run --rm -it dotfiles
 ```
 
