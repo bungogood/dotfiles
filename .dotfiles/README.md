@@ -1,5 +1,5 @@
 # Dotfiles
-This repository contains dotfile used for system config. Using the config alias files can be added to this repository.
+This repository contains dotfile used for system config. Using the `config` alias files can be added to this repository.
 
 ## Requirements
 
@@ -10,6 +10,20 @@ This repository contains dotfile used for system config. Using the config alias 
 
 ```sh
 curl -Lks https://raw.githubusercontent.com/Bungogood/dotfiles/master/.dotfiles/install.sh | /bin/bash
+```
+
+## Adding Changes
+
+```sh
+config add <file>
+config commit -m "Updaing <file>"
+config push
+```
+
+## Update Dotfiles
+
+```sh
+config pull
 ```
 
 ## Docker Preview
