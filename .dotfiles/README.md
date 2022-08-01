@@ -9,7 +9,7 @@ This repository contains dotfile used for system config. Using the `config` alia
 ## Installation
 
 ```sh
-curl -Lks https://raw.githubusercontent.com/Bungogood/dotfiles/master/.dotfiles/install.sh | /bin/bash
+curl -Lks https://raw.githubusercontent.com/Bungogood/dotfiles/linux/.dotfiles/install.sh | /bin/bash
 ```
 
 ## Adding Changes
