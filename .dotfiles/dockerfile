@@ -1,0 +1,4 @@
+FROM alpine
+RUN apk add --no-cache git zsh curl ncurses 
+WORKDIR /root
+ENTRYPOINT ["/bin/zsh", "-c", "curl -Lks https://raw.githubusercontent.com/Bungogood/dotfiles/mac/.dotfiles/install.sh | /bin/zsh && /bin/zsh"]
