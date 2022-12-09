@@ -12,5 +12,6 @@ if [ $? = 0 ]; then
 fi;
 config checkout
 config config status.showUntrackedFiles no
+git config --global core.excludesfile ~/.gitignore_global
 rm $HOME/README.md
 rm $HOME/brewfile
