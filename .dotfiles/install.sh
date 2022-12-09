@@ -13,3 +13,4 @@ fi;
 config checkout
 config config status.showUntrackedFiles no
 rm $HOME/README.md
+rm $HOME/brewfile
