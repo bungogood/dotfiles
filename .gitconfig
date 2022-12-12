@@ -1,8 +1,9 @@
 [core]
-    editor = /usr/bin/nano
+	editor = vim
+    excludesfile = ~/.gitignore
 
 [user]
-    name = Bungogood
+    name = Jonathan Good
     email = github@bungogood.com
 
 [color]
@@ -35,3 +36,8 @@
 
 [credential]
     helper = manager
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
