@@ -142,8 +142,13 @@ docker() {
 }
 
 alias config="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
+alias trash='trash -F'
+alias bin='trash -F'
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
+
+export C_INCLUDE_PATH="$(brew --prefix)/lib:$(brew --prefix)/include"
+export LIBRARY_PATH="$(brew --prefix)/lib:$(brew --prefix)/include"
 
 [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
 
@@ -158,3 +163,4 @@ export NVM_DIR="$HOME/.nvm"
   [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
   [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
+export PATH="$HOME/.cargo/bin:$PATH"
