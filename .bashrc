@@ -43,9 +43,9 @@ parse_git_branch() {
 }
 
 # Customize the prompt (username@machine dir (branch) $ )
-PS1="\[${LightRed}\]\u\[${NC}\]@\[${Cyan}\]\h\[${NC}\] "  # "username@machine "
+PS1="\[${Cyan}\]\u\[${NC}\]@\[${Green}\]\h\[${NC}\] "  # "username@machine "
 PS1=${PS1}"\[${NC}\]\W\[${NC}\] "  # "dir "
-PS1=${PS1}"\[${LightRed}\]\$(parse_git_branch)\[${NC}\]$ "  # "(branch) $ "
+PS1=${PS1}"\[${Cyan}\]\$(parse_git_branch)\[${NC}\]$ "  # "(branch) $ "
 export PS1
 
 # History settings to ignore duplicates and commands starting with spaces
@@ -66,15 +66,6 @@ if [ -x /usr/bin/dircolors ]; then
   alias egrep='egrep --color=auto'  # Colorized egrep output
 fi
 
-<<<<<<< HEAD
-# colored GCC warnings and errors
-#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-# some more ls aliases
-alias ll='ls -Alh'
-alias la='ls -A'
-alias l='ls -CF'
-
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -90,10 +81,7 @@ if ! shopt -oq posix; then
   fi
 fi
 
-LS_COLORS=$LS_COLORS:'ln=1;33'
-=======
 LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32'
->>>>>>> mac
 export LS_COLORS
 
 # Additional ls aliases for convenience
@@ -116,14 +104,6 @@ docker() {
   fi
 }
 
-# Aliases and settings related to Homebrew and Pyenv
-eval "$(/opt/homebrew/bin/brew shellenv)"  # Set environment variables for Homebrew
-export C_INCLUDE_PATH="$(brew --prefix)/lib:$(brew --prefix)/include"  # Include paths for compiling C code
-export LIBRARY_PATH="$(brew --prefix)/lib:$(brew --prefix)/include"  # Library paths for linking
-
-# Load Bash completion and other configurations for Homebrew
-[ -s "/opt/homebrew/etc/profile.d/bash_completion.sh" ] && source "/opt/homebrew/etc/profile.d/bash_completion.sh"
-
 # Initialize pyenv if available
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
@@ -134,10 +114,5 @@ if command -v jenv >/dev/null 2>&1; then
   export PATH="$HOME/.jenv/bin:$PATH"  # Add jenv to the PATH
   eval "$(jenv init -)"  # Initialize jenv for managing Java versions
 fi
-
-# Configuration for NVM (Node Version Manager)
-export NVM_DIR="$HOME/.nvm"  # Set NVM directory
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && source "/opt/homebrew/opt/nvm/nvm.sh"  # Load NVM
-[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && source "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # Load NVM Bash completion
 
 export PATH="$HOME/.cargo/bin:$PATH"  # Add cargo (Rust package manager) to the PATH
