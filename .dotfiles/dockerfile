@@ -1,4 +1,4 @@
 FROM alpine
-RUN apk add --no-cache git bash curl ncurses 
+RUN apk add --no-cache git zsh curl ncurses 
 WORKDIR /root
 ENTRYPOINT ["/bin/bash", "-c", "curl -Lks https://raw.githubusercontent.com/Bungogood/dotfiles/linux/.dotfiles/install.sh | /bin/bash && /bin/bash"]

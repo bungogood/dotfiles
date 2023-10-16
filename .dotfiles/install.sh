@@ -1,4 +1,4 @@
-git clone --bare https://github.com/Bungogood/dotfiles.git $HOME/.dotfiles
+git clone --bare --branch mac https://github.com/Bungogood/dotfiles.git $HOME/.dotfiles
 function config {
    /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME $@
 }
@@ -12,4 +12,4 @@ if [ $? = 0 ]; then
 fi;
 config checkout
 config config status.showUntrackedFiles no
-rm $HOME/README.md $HOME/LICENSE
+rm $HOME/README.md $HOME/LICENSE $HOME/Brewfile

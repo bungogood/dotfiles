@@ -2,6 +2,7 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+# Color codes for customizing the prompt and aliases
 # Normal Colors
 Black='\e[0;30m'        # Black
 Red='\e[0;31m'          # Red
@@ -34,79 +35,38 @@ On_White='\e[47m'       # White
 
 NC="\e[m"               # Color Reset
 
-LightRed='\e[38;5;9m'   # LightRed
+LightRed='\e[38;5;9m'   # Light Red
 
-# If not running interactively, don't do anything
-case $- in
-    *i*) ;;
-      *) return;;
-esac
-
-# don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
-HISTCONTROL=ignoreboth
-
-# append to the history file, don't overwrite it
-shopt -s histappend
-
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
-
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
-shopt -s checkwinsize
-
-# If set, the pattern "**" used in a pathname expansion context will
-# match all files and zero or more directories and subdirectories.
-#shopt -s globstar
-
-# make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
-
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
-fi
-
-# set a fancy prompt (non-color, unless we know we "want" color)
-case "$TERM" in
-    xterm-color|*-256color) color_prompt=yes;;
-esac
-
+# Function to show the current Git branch in the prompt
 parse_git_branch() {
-     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1) /'
+  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1) /'
 }
 
-# "username@machine "
-PS1="\[${LightRed}\]\u\[${NC}\]@\[${Cyan}\]\h\[${NC}\] "
-# "dir "
-PS1=${PS1}"\[${NC}\]\W\[${NC}\] "
-# "(branch )$ "
-PS1=${PS1}"\[${LightRed}\]\$(parse_git_branch)\[${NC}\]$ "
+# Customize the prompt (username@machine dir (branch) $ )
+PS1="\[${LightRed}\]\u\[${NC}\]@\[${Cyan}\]\h\[${NC}\] "  # "username@machine "
+PS1=${PS1}"\[${NC}\]\W\[${NC}\] "  # "dir "
+PS1=${PS1}"\[${LightRed}\]\$(parse_git_branch)\[${NC}\]$ "  # "(branch) $ "
 export PS1
 
-# If this is an xterm set the title to user@host:dir
-# case "$TERM" in
-# xterm*|rxvt*)
-#     PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-#     ;;
-# *)
-#     ;;
-# esac
+# History settings to ignore duplicates and commands starting with spaces
+HISTCONTROL=ignoreboth
+shopt -s histappend
+HISTSIZE=1000  # Maximum number of commands in the history
+HISTFILESIZE=2000  # Maximum size of the history file
 
-# enable color support of ls and also add handy aliases
+# Automatically update the values of LINES and COLUMNS after each command
+shopt -s checkwinsize
+
+# Enable color support for ls and add useful aliases
 if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
-
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
+  test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+  alias ls='ls --color=auto'  # Colorized ls output
+  alias grep='grep --color=auto'  # Colorized grep output
+  alias fgrep='fgrep --color=auto'  # Colorized fgrep output
+  alias egrep='egrep --color=auto'  # Colorized egrep output
 fi
 
+<<<<<<< HEAD
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
@@ -131,23 +91,53 @@ if ! shopt -oq posix; then
 fi
 
 LS_COLORS=$LS_COLORS:'ln=1;33'
+=======
+LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32'
+>>>>>>> mac
 export LS_COLORS
 
+# Additional ls aliases for convenience
+alias ls='gls --color=always'
+alias ll='ls -Alh'  # List detailed information about files
+alias la='ls -A'  # List all files (including hidden ones)
+
+# Aliases for convenient file management
+alias config="git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
+alias trash='trash -F'  # Move files to the trash (requires trash-cli)
+alias bin='trash -F'  # Alias for 'trash' (removes files/folders)
+alias uuidgen='uuidgen | tr "[:upper:]" "[:lower:]"'  # Generate lowercase UUID
+
+# Custom Docker alias to support temporary containers
 docker() {
-    if [[ $1 == "tmp" ]]; then
-        command docker run --rm -it "${@:2}"
-    else
-        command docker "$@"
-    fi
+  if [[ $1 == "tmp" ]]; then
+    command docker run --rm -it "${@:2}"  # Automatically remove the container after exit
+  else
+    command docker "$@"
+  fi
 }
 
-my_ip() {
-    MY_IP=$(ip r show | grep " src " | cut -d " " -f 3,9 | sed 's/ /: /g')
-    echo ${MY_IP:-"Not connected"}
-}
+# Aliases and settings related to Homebrew and Pyenv
+eval "$(/opt/homebrew/bin/brew shellenv)"  # Set environment variables for Homebrew
+export C_INCLUDE_PATH="$(brew --prefix)/lib:$(brew --prefix)/include"  # Include paths for compiling C code
+export LIBRARY_PATH="$(brew --prefix)/lib:$(brew --prefix)/include"  # Library paths for linking
 
-alias config="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
+# Load Bash completion and other configurations for Homebrew
+[ -s "/opt/homebrew/etc/profile.d/bash_completion.sh" ] && source "/opt/homebrew/etc/profile.d/bash_completion.sh"
 
-my_ip
-echo 
-date
+# Initialize pyenv if available
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
+
+# Initialize jenv if available
+if command -v jenv >/dev/null 2>&1; then
+  export PATH="$HOME/.jenv/bin:$PATH"  # Add jenv to the PATH
+  eval "$(jenv init -)"  # Initialize jenv for managing Java versions
+fi
+
+# Configuration for NVM (Node Version Manager)
+export NVM_DIR="$HOME/.nvm"  # Set NVM directory
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && source "/opt/homebrew/opt/nvm/nvm.sh"  # Load NVM
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && source "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # Load NVM Bash completion
+
+export PATH="$HOME/.cargo/bin:$PATH"  # Add cargo (Rust package manager) to the PATH

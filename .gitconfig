@@ -1,37 +1,50 @@
 [core]
-    editor = /usr/bin/nano
+	editor = vim
+	excludesfile = ~/.gitignore
 
 [user]
-    name = Bungogood
-    email = github@bungogood.com
+	name = Jonathan Good
+	email = github@bungogood.com
 
 [color]
-    branch = auto
-    diff = auto
-    status = auto
+	branch = auto
+	diff = auto
+	status = auto
 
 [color "branch"]
-    current = red reverse
-    local = blue
-    remote = green
+	current = red reverse
+	local = blue
+	remote = green
 
 [color "diff"]
-    meta = yellow
-    frag = magenta
-    old = red bold
-    new = green
-    plain = white
+	meta = yellow
+	frag = magenta
+	old = red bold
+	new = green
+	plain = white
 
 [color "status"]
-    added = yellow
-    changed = green
-    untracked = cyan
+	added = yellow
+	changed = green
+	untracked = cyan
 
 [alias]
-    branch = branch -ra
-    pop = stash pop
-    cm = commit -m
-    ca = commit --amend
+	b = branch -ra
+	pop = stash pop
+	cm = commit -m
+	ca = commit --amend
 
 [credential]
-    helper = manager
+	helper = manager
+
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+
+[init]
+	defaultBranch = main
+
+[push]
+	autoSetupRemote = true
