@@ -79,6 +79,8 @@ alias config="git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 alias trash='trash -F'  # Move files to the trash (requires trash-cli)
 alias bin='trash -F'  # Alias for 'trash' (removes files/folders)
 alias uuidgen='uuidgen | tr "[:upper:]" "[:lower:]"'  # Generate lowercase UUID
+alias cls='printf "\33c\e[3J"'
+alias activate='source .venv/bin/activate'
 
 # Custom Docker alias to support temporary containers
 docker() {
@@ -108,9 +110,14 @@ if command -v jenv >/dev/null 2>&1; then
   eval "$(jenv init -)"  # Initialize jenv for managing Java versions
 fi
 
+if command -v goenv > /dev/null 2>&1; then
+	eval "$(goenv init -)"
+fi
 # Configuration for NVM (Node Version Manager)
 export NVM_DIR="$HOME/.nvm"  # Set NVM directory
 [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && source "/opt/homebrew/opt/nvm/nvm.sh"  # Load NVM
 [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && source "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # Load NVM Bash completion
 
-export PATH="$HOME/.cargo/bin:$PATH"  # Add cargo (Rust package manager) to the PATH
+export PATH="/opt/homebrew/opt/scala@2.12/bin:$PATH"
+
+source $HOME/.cargo/env
