@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Flatten nested dirs like foo/foo/foo → foo
+
+root="${1%/}"
+name="$(basename "$root")"
+path="$root"
+
+while [ -d "$path/$name" ]; do
+  path="$path/$name"
+done
+
+[ "$path" = "$root" ] && exit 0
+
+echo "Flattening $path → $root"
+
+shopt -s dotglob nullglob
+while [ "$path" != "$root" ]; do
+  parent="$(dirname "$path")"
+  mv "$path"/* "$parent"/ || exit 1
+  rmdir "$path"
+  path="$parent"
+done
