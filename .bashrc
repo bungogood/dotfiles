@@ -79,8 +79,6 @@ alias config="git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 alias uuidgen='uuidgen | tr "[:upper:]" "[:lower:]"'  # Generate lowercase UUID
 alias cls='printf "\33c\e[3J"'
 alias activate='source .venv/bin/activate'
-alias vi='nvim'
-alias vim='nvim'
 
 # Custom Docker alias to support temporary containers
 docker() {
