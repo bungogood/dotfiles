@@ -57,6 +57,15 @@ HISTFILESIZE=2000  # Maximum size of the history file
 # Automatically update the values of LINES and COLUMNS after each command
 shopt -s checkwinsize
 
+# Enable color support for ls and add useful aliases
+if [ -x /usr/bin/dircolors ]; then
+  test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+  alias ls='ls --color=auto'  # Colorized ls output
+  alias grep='grep --color=auto'  # Colorized grep output
+  alias fgrep='fgrep --color=auto'  # Colorized fgrep output
+  alias egrep='egrep --color=auto'  # Colorized egrep output
+fi
+
 LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32'
 export LS_COLORS
 
@@ -79,5 +88,17 @@ docker() {
     command docker "$@"
   fi
 }
+
+# Only auto-start tmux if not already inside it and not in VS Code Remote
+if command -v tmux >/dev/null 2>&1; then
+  if [ -z "$TMUX" ] && [ "$TERM_PROGRAM" != "vscode" ]; then
+    # Check if session exists
+    if ! tmux has-session -t dev 2>/dev/null; then
+      # Create the session and launch htop in the first pane
+      tmux new-session -s dev -d 'htop' \; new-window
+    fi
+    tmux attach-session -t dev
+  fi
+fi
 
 source $HOME/.cargo/env

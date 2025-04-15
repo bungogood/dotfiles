@@ -12,4 +12,4 @@ if [ $? = 0 ]; then
 fi;
 config checkout
 config config status.showUntrackedFiles no
-rm $HOME/README.md $HOME/LICENSE $HOME/Brewfile
+rm $HOME/README.md $HOME/LICENSE

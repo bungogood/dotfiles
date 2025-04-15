@@ -33,6 +33,7 @@
 	pop = stash pop
 	cm = commit -m
 	ca = commit --amend
+	graph = log --oneline --decorate --graph
 
 [credential]
 	helper = manager
@@ -48,3 +49,6 @@
 
 [push]
 	autoSetupRemote = true
+
+[pull]
+	rebase = true
