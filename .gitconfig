@@ -36,7 +36,7 @@
 	graph = log --oneline --decorate --graph
 
 [credential]
-	helper = manager
+	helper = cache
 
 [filter "lfs"]
 	clean = git-lfs clean -- %f
