@@ -1,4 +1,4 @@
-git clone --bare --branch linux https://github.com/Bungogood/dotfiles.git $HOME/.dotfiles
+git clone --bare --branch linux https://github.com/bungogood/dotfiles.git $HOME/.dotfiles
 function config {
    /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME $@
 }
