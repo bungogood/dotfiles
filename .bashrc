@@ -43,9 +43,9 @@ parse_git_branch() {
 }
 
 # Customize the prompt (username@machine dir (branch) $ )
-PS1="\[${Cyan}\]\u\[${NC}\]@\[${Green}\]\h\[${NC}\] "  # "username@machine "
+PS1="\[${LightRed}\]\u\[${NC}\]@\[${Cyan}\]\h\[${NC}\] "  # "username@machine "
 PS1=${PS1}"\[${NC}\]\W\[${NC}\] "  # "dir "
-PS1=${PS1}"\[${Cyan}\]\$(parse_git_branch)\[${NC}\]$ "  # "(branch) $ "
+PS1=${PS1}"\[${LightRed}\]\$(parse_git_branch)\[${NC}\]$ "  # "(branch) $ "
 export PS1
 
 # History settings to ignore duplicates and commands starting with spaces
