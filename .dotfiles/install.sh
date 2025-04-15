@@ -12,4 +12,5 @@ if [ $? = 0 ]; then
 fi;
 config checkout
 config config status.showUntrackedFiles no
+config remote set-url origin git@github.com:bungogood/dotfiles.git
 rm $HOME/README.md $HOME/LICENSE
