@@ -89,6 +89,51 @@ docker() {
   fi
 }
 
+# Aliases and settings related to Homebrew and Pyenv
+eval "$(/opt/homebrew/bin/brew shellenv)"  # Set environment variables for Homebrew
+export C_INCLUDE_PATH="$(brew --prefix)/lib:$(brew --prefix)/include"  # Include paths for compiling C code
+export LIBRARY_PATH="$(brew --prefix)/lib:$(brew --prefix)/include"  # Library paths for linking
+export CPPFLAGS="-I$(brew --prefix openssl)/include -I$(brew --prefix llvm)/include"
+export LDFLAGS="-L$(brew --prefix openssl)/lib -L$(brew --prefix llvm)/lib"
+
+# Load Bash completion and other configurations for Homebrew
+[ -s "/opt/homebrew/etc/profile.d/bash_completion.sh" ] && source "/opt/homebrew/etc/profile.d/bash_completion.sh"
+
+# Load home bash completions
+[ -s $HOME/.bash_completion.sh ] && source $HOME/.bash_completion.sh
+
+# Initialize pyenv if available
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
+
+# Initialize jenv if available
+if command -v jenv >/dev/null 2>&1; then
+  export PATH="$HOME/.jenv/bin:$PATH"  # Add jenv to the PATH
+  eval "$(jenv init -)"  # Initialize jenv for managing Java versions
+fi
+
+if command -v goenv > /dev/null 2>&1; then
+	eval "$(goenv init -)"
+fi
+
+[ -x "$(command -v opam)" ] && eval $(opam env)
+
+# Configuration for NVM (Node Version Manager)
+export NVM_DIR="$HOME/.nvm"  # Set NVM directory
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && source "/opt/homebrew/opt/nvm/nvm.sh"  # Load NVM
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && source "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # Load NVM Bash completion
+
+# Loads any .envrc or .env files
+[[ $(command -v direnv) ]] && eval "$(direnv hook bash)"
+
+eval "$(zoxide init bash)"
+
+export PATH="/opt/homebrew/opt/scala@2.12/bin:$PATH"
+
+source $HOME/.cargo/env
+
+
 # Only auto-start tmux if not already inside it and not in VS Code Remote
 if command -v tmux >/dev/null 2>&1; then
   if [ -z "$TMUX" ] && [ "$TERM_PROGRAM" != "vscode" ]; then
