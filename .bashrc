@@ -127,7 +127,7 @@ export NVM_DIR="$HOME/.nvm"  # Set NVM directory
 # Loads any .envrc or .env files
 [[ $(command -v direnv) ]] && eval "$(direnv hook bash)"
 
-eval "$(zoxide init bash)"
+# eval "$(zoxide init bash)"
 
 export PATH="/opt/homebrew/opt/scala@2.12/bin:$PATH"
 
@@ -147,3 +147,13 @@ if command -v tmux >/dev/null 2>&1; then
 fi
 
 export PATH="$HOME/.dotfiles/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+
+eval "$(worktree init bash)"
+export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
+export CMAKE_PREFIX_PATH="/opt/homebrew/opt/llvm"
+export CC=/opt/homebrew/opt/llvm/bin/clang
+export CXX=/opt/homebrew/opt/llvm/bin/clang++
+export PATH="$HOME/.ghcup/bin:$PATH"
