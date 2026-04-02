@@ -29,11 +29,9 @@
 	untracked = cyan
 
 [alias]
-	b = branch -ra
 	pop = stash pop
-	cm = commit -m
-	ca = commit --amend
 	graph = log --oneline --decorate --graph
+    amend = commit --amend --no-edit
 
 [credential]
 	helper = cache
