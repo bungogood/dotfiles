@@ -22,16 +22,31 @@ config() {
   /usr/bin/git --git-dir="$DOTFILES_REPO/" --work-tree="$HOME" "$@"
 }
 
+backup_file() {
+  file="$1"
+  case "$file" in
+    .dotfiles/*) return ;;
+  esac
+  [ -e "$HOME/$file" ] || [ -L "$HOME/$file" ] || return
+  mkdir -p "$BACKUP_DIR/$(dirname "$file")"
+  mv "$HOME/$file" "$BACKUP_DIR/$file"
+}
+
 if config checkout >/dev/null 2>&1; then
   echo "Checked out config."
 else
   echo "Backing up pre-existing dot files to $BACKUP_DIR."
   mkdir -p "$BACKUP_DIR"
-  config checkout 2>&1 | awk '/^[[:space:]]+\./ {print $1}' | while IFS= read -r file; do
+
+  # common top-level conflicts from this repo
+  backup_file "README.md"
+  backup_file "LICENSE"
+
+  checkout_output="$(config checkout 2>&1 || true)"
+  while IFS= read -r file; do
     [ -z "$file" ] && continue
-    mkdir -p "$BACKUP_DIR/$(dirname "$file")"
-    mv "$HOME/$file" "$BACKUP_DIR/$file"
-  done
+    backup_file "$file"
+  done < <(printf '%s\n' "$checkout_output" | awk '/^[[:space:]]+[^[:space:]]/ {print $1}')
   config checkout >/dev/null
 fi
 
