@@ -1,75 +1,22 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
+# interactive shells only
+[[ $- != *i* ]] && return
 
-# Color codes for customizing the prompt and aliases
-# Normal Colors
-Black='\e[0;30m'        # Black
-Red='\e[0;31m'          # Red
-Green='\e[0;32m'        # Green
-Yellow='\e[0;33m'       # Yellow
-Blue='\e[0;34m'         # Blue
-Purple='\e[0;35m'       # Purple
-Cyan='\e[0;36m'         # Cyan
-White='\e[0;37m'        # White
+. "$HOME/.local/scripts/bash-completion-lazy.sh"
+. "$HOME/.local/scripts/bash-git-prompt.sh"
+. "$HOME/.local/scripts/wrk-shim.sh"
 
-# Bold
-BBlack='\e[1;30m'       # Black
-BRed='\e[1;31m'         # Red
-BGreen='\e[1;32m'       # Green
-BYellow='\e[1;33m'      # Yellow
-BBlue='\e[1;34m'        # Blue
-BPurple='\e[1;35m'      # Purple
-BCyan='\e[1;36m'        # Cyan
-BWhite='\e[1;37m'       # White
-
-# Background
-On_Black='\e[40m'       # Black
-On_Red='\e[41m'         # Red
-On_Green='\e[42m'       # Green
-On_Yellow='\e[43m'      # Yellow
-On_Blue='\e[44m'        # Blue
-On_Purple='\e[45m'      # Purple
-On_Cyan='\e[46m'        # Cyan
-On_White='\e[47m'       # White
-
-NC="\e[m"               # Color Reset
-
-LightRed='\e[38;5;9m'   # Light Red
-
-# Function to show the current Git branch in the prompt
-parse_git_branch() {
-  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1) /'
-}
-
-# Customize the prompt (username@machine dir (branch) $ )
-PS1="\[${LightRed}\]\u\[${NC}\]@\[${Cyan}\]\h\[${NC}\] "  # "username@machine "
-PS1=${PS1}"\[${NC}\]\W\[${NC}\] "  # "dir "
-PS1=${PS1}"\[${LightRed}\]\$(parse_git_branch)\[${NC}\]$ "  # "(branch) $ "
-export PS1
-
-# History settings to ignore duplicates and commands starting with spaces
-HISTCONTROL=ignoreboth
+# History: ignore commands with leading spaces and deduplicate entries.
+HISTCONTROL=ignorespace:erasedups
+HISTSIZE=5000
+HISTFILESIZE=10000
 shopt -s histappend
-HISTSIZE=1000  # Maximum number of commands in the history
-HISTFILESIZE=2000  # Maximum size of the history file
 
-# Automatically update the values of LINES and COLUMNS after each command
-shopt -s checkwinsize
+# Prompt colors kept local to prompt setup.
+_p_user='\[\e[38;5;9m\]'
+_p_host='\[\e[0;36m\]'
+_p_reset='\[\e[0m\]'
+PS1="${_p_user}\u${_p_reset}@${_p_host}\h${_p_reset} \W ${_p_user}\$(__git_prompt_segment)${_p_reset}\\$ "
 
-# Enable color support for ls and add useful aliases
-if [ -x /usr/bin/dircolors ]; then
-  test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-  alias ls='ls --color=auto'  # Colorized ls output
-  alias grep='grep --color=auto'  # Colorized grep output
-  alias fgrep='fgrep --color=auto'  # Colorized fgrep output
-  alias egrep='egrep --color=auto'  # Colorized egrep output
-fi
-
-LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32'
-export LS_COLORS
-
-# Additional ls aliases for convenience
 alias ls='ls --color=always'
 alias ll='ls -Alh'  # List detailed information about files
 alias la='ls -A'  # List all files (including hidden ones)
@@ -79,81 +26,4 @@ alias config="git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 alias uuidgen='uuidgen | tr "[:upper:]" "[:lower:]"'  # Generate lowercase UUID
 alias cls='printf "\33c\e[3J"'
 alias activate='source .venv/bin/activate'
-
-# Custom Docker alias to support temporary containers
-docker() {
-  if [[ $1 == "tmp" ]]; then
-    command docker run --rm -it "${@:2}"  # Automatically remove the container after exit
-  else
-    command docker "$@"
-  fi
-}
-
-# Aliases and settings related to Homebrew and Pyenv
-eval "$(/opt/homebrew/bin/brew shellenv)"  # Set environment variables for Homebrew
-export C_INCLUDE_PATH="$(brew --prefix)/lib:$(brew --prefix)/include"  # Include paths for compiling C code
-export LIBRARY_PATH="$(brew --prefix)/lib:$(brew --prefix)/include"  # Library paths for linking
-export CPPFLAGS="-I$(brew --prefix openssl)/include -I$(brew --prefix llvm)/include"
-export LDFLAGS="-L$(brew --prefix openssl)/lib -L$(brew --prefix llvm)/lib"
-
-# Load Bash completion and other configurations for Homebrew
-[ -s "/opt/homebrew/etc/profile.d/bash_completion.sh" ] && source "/opt/homebrew/etc/profile.d/bash_completion.sh"
-
-# Load home bash completions
-[ -s $HOME/.bash_completion.sh ] && source $HOME/.bash_completion.sh
-
-# Initialize pyenv if available
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
-fi
-
-# Initialize jenv if available
-if command -v jenv >/dev/null 2>&1; then
-  export PATH="$HOME/.jenv/bin:$PATH"  # Add jenv to the PATH
-  eval "$(jenv init -)"  # Initialize jenv for managing Java versions
-fi
-
-if command -v goenv > /dev/null 2>&1; then
-	eval "$(goenv init -)"
-fi
-
-[ -x "$(command -v opam)" ] && eval $(opam env)
-
-# Configuration for NVM (Node Version Manager)
-export NVM_DIR="$HOME/.nvm"  # Set NVM directory
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && source "/opt/homebrew/opt/nvm/nvm.sh"  # Load NVM
-[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && source "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # Load NVM Bash completion
-
-# Loads any .envrc or .env files
-[[ $(command -v direnv) ]] && eval "$(direnv hook bash)"
-
-# eval "$(zoxide init bash)"
-
-export PATH="/opt/homebrew/opt/scala@2.12/bin:$PATH"
-
-source $HOME/.cargo/env
-
-
-# Only auto-start tmux if not already inside it and not in VS Code Remote
-if command -v tmux >/dev/null 2>&1; then
-  if [ -z "$TMUX" ] && [ "$TERM_PROGRAM" != "vscode" ]; then
-    # Check if session exists
-    if ! tmux has-session -t dev 2>/dev/null; then
-      # Create the session and launch htop in the first pane
-      tmux new-session -s dev -d 'htop' \; new-window
-    fi
-    tmux attach-session -t dev
-  fi
-fi
-
-export PATH="$HOME/.dotfiles/bin:$PATH"
-export PATH="$HOME/.local/bin:$PATH"
-
-eval "$(worktree init bash)"
-export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
-export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
-export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
-export CMAKE_PREFIX_PATH="/opt/homebrew/opt/llvm"
-export CC=/opt/homebrew/opt/llvm/bin/clang
-export CXX=/opt/homebrew/opt/llvm/bin/clang++
-export PATH="$HOME/.ghcup/bin:$PATH"
+alias vim='nvim'
