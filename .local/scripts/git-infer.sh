@@ -5,6 +5,12 @@ set -euo pipefail
 dry_run=0
 args=()
 
+looks_like_conventional_header() {
+  local text="$1"
+  local re='^(fix|feat|chore|docs|style|refactor|perf|test|build|ci|revert)(\([^)]+\))?(!)?:[[:space:]].+'
+  [[ "$text" =~ $re ]]
+}
+
 while [[ "$#" -gt 0 ]]; do
   case "$1" in
     -n|--dry-run)
@@ -83,8 +89,12 @@ if [[ "$rest" =~ ^(fix|feat|chore|docs|style|refactor|perf|test|build|ci|revert)
   tail="${BASH_REMATCH[2]}"
 fi
 
+explicit_header=0
 if [[ "${#args[@]}" -gt 0 ]]; then
   message="${args[*]}"
+  if looks_like_conventional_header "$message"; then
+    explicit_header=1
+  fi
 else
   message="$(slug_to_words "$tail")"
 fi
@@ -97,7 +107,7 @@ if [[ -n "$ticket" ]] && [[ "$(cap_after_ticket_for_kind "$ticket_kind")" == "1"
   fi
 fi
 
-if [[ -n "$type" ]]; then
+if [[ -n "$type" ]] && [[ "$explicit_header" == "0" ]]; then
   message="$type: $message"
 fi
 
