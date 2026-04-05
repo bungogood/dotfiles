@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+out_file="$HOME/.bashrc.generated"
+tmp_file="$(mktemp "${TMPDIR:-/tmp}/bashrc.generated.XXXXXX")"
+
+{
+  printf '%s\n' "# Auto-generated Bash hook cache."
+  printf '%s\n' "# Regenerate with: bashrc-refresh-hooks"
+  printf '%s\n' ""
+
+  if command -v direnv >/dev/null 2>&1; then
+    direnv hook bash
+    printf '%s\n' ""
+  fi
+
+  if command -v worktree >/dev/null 2>&1; then
+    worktree hook bash
+    printf '%s\n' ""
+  fi
+} > "$tmp_file"
+
+mv "$tmp_file" "$out_file"
+chmod 0644 "$out_file"
+
+printf 'Wrote %s\n' "$out_file"
