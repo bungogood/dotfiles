@@ -108,6 +108,8 @@ restore_missing_tracked_files
 
 config config status.showUntrackedFiles no
 config remote set-url origin git@github.com:bungogood/dotfiles.git
+config config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
+config fetch origin --prune
 install_config_completion
 
 for file in README.md LICENSE; do
