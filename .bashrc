@@ -22,7 +22,10 @@ alias ll='ls -Alh'  # List detailed information about files
 alias la='ls -A'  # List all files (including hidden ones)
 
 # Aliases for convenient file management
-alias config="git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
+function config {
+  git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" "$@"
+}
+
 alias uuidgen='uuidgen | tr "[:upper:]" "[:lower:]"'  # Generate lowercase UUID
 alias cls='printf "\33c\e[3J"'
 alias activate='source .venv/bin/activate'
