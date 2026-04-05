@@ -27,9 +27,10 @@ backup_file() {
   case "$file" in
     .dotfiles/*) return ;;
   esac
-  [ -e "$HOME/$file" ] || [ -L "$HOME/$file" ] || return
+  [ -e "$HOME/$file" ] || [ -L "$HOME/$file" ] || return 1
   mkdir -p "$BACKUP_DIR/$(dirname "$file")"
   mv "$HOME/$file" "$BACKUP_DIR/$file"
+  return 0
 }
 
 install_config_completion() {
@@ -67,23 +68,43 @@ fi
 EOF
 }
 
+restore_missing_tracked_files() {
+  local file
+  while IFS= read -r -d '' file; do
+    if [ ! -e "$HOME/$file" ] && [ ! -L "$HOME/$file" ]; then
+      config checkout -- "$file" >/dev/null 2>&1 || true
+    fi
+  done < <(config ls-files -z)
+}
+
 if config checkout >/dev/null 2>&1; then
   echo "Checked out config."
 else
   echo "Backing up pre-existing dot files to $BACKUP_DIR."
   mkdir -p "$BACKUP_DIR"
 
-  # common top-level conflicts from this repo
-  backup_file "README.md"
-  backup_file "LICENSE"
+  while true; do
+    moved=0
+    checkout_output="$(config checkout 2>&1 || true)"
+    while IFS= read -r file; do
+      [ -z "$file" ] && continue
+      if backup_file "$file"; then
+        moved=$((moved + 1))
+      fi
+    done < <(printf '%s\n' "$checkout_output" | awk '/^[[:space:]]+[^[:space:]]/ {print $1}')
 
-  checkout_output="$(config checkout 2>&1 || true)"
-  while IFS= read -r file; do
-    [ -z "$file" ] && continue
-    backup_file "$file"
-  done < <(printf '%s\n' "$checkout_output" | awk '/^[[:space:]]+[^[:space:]]/ {print $1}')
-  config checkout >/dev/null
+    if config checkout >/dev/null 2>&1; then
+      break
+    fi
+
+    if [ "$moved" -eq 0 ]; then
+      printf '%s\n' "$checkout_output" >&2
+      exit 1
+    fi
+  done
 fi
+
+restore_missing_tracked_files
 
 config config status.showUntrackedFiles no
 config remote set-url origin git@github.com:bungogood/dotfiles.git
