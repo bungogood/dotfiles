@@ -32,6 +32,41 @@ backup_file() {
   mv "$HOME/$file" "$BACKUP_DIR/$file"
 }
 
+install_config_completion() {
+  completion_dir="$HOME/.bash_completion.d"
+  completion_file="$completion_dir/config"
+
+  mkdir -p "$completion_dir"
+  cat > "$completion_file" <<'EOF'
+#!/usr/bin/env bash
+
+if ! declare -F __git_complete >/dev/null 2>&1; then
+  if declare -F _completion_loader >/dev/null 2>&1; then
+    _completion_loader git >/dev/null 2>&1 || true
+  fi
+fi
+
+if ! declare -F __git_complete >/dev/null 2>&1; then
+  for path in \
+    /opt/homebrew/etc/bash_completion.d/git-completion.bash \
+    /usr/local/etc/bash_completion.d/git-completion.bash \
+    /usr/share/bash-completion/completions/git \
+    /usr/share/git/completion/git-completion.bash \
+    /usr/share/git-core/contrib/completion/git-completion.bash
+  do
+    if [ -r "$path" ]; then
+      . "$path"
+      break
+    fi
+  done
+fi
+
+if declare -F __git_complete >/dev/null 2>&1; then
+  __git_complete config git
+fi
+EOF
+}
+
 if config checkout >/dev/null 2>&1; then
   echo "Checked out config."
 else
@@ -52,6 +87,7 @@ fi
 
 config config status.showUntrackedFiles no
 config remote set-url origin git@github.com:bungogood/dotfiles.git
+install_config_completion
 
 for file in README.md LICENSE; do
   if config ls-files --error-unmatch "$file" >/dev/null 2>&1; then
