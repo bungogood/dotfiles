@@ -14,6 +14,11 @@ tmp_file="$(mktemp "${TMPDIR:-/tmp}/bashrc.generated.XXXXXX")"
     printf '%s\n' ""
   fi
 
+  if command -v zoxide >/dev/null 2>&1; then
+    zoxide init bash
+    printf '%s\n' ""
+  fi
+
   if command -v worktree >/dev/null 2>&1; then
     worktree hook bash
     printf '%s\n' ""
