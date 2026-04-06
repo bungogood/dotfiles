@@ -1,5 +1,4 @@
-# interactive shells only
-[[ $- != *i* ]] && return
+# ~/.bashrc
 
 [[ -r "$HOME/.local/scripts/bash-completion-lazy.sh" ]] && . "$HOME/.local/scripts/bash-completion-lazy.sh"
 [[ -r "$HOME/.local/scripts/bash-git-prompt.sh" ]] && . "$HOME/.local/scripts/bash-git-prompt.sh"
