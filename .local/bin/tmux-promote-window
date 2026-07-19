@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+window_id=${1:?window id is required}
+current_path=$(tmux display-message -p -t "$window_id" '#{pane_current_path}')
+session_name=$(basename "$current_path")
+
+if tmux has-session -t "=$session_name" 2>/dev/null; then
+  tmux move-window -s "$window_id" -t "$session_name:"
+  tmux switch-client -t "$session_name"
+  exit 0
+fi
+
+# tmux requires a window when creating a session. Remove this temporary one
+# after the active window has been moved into the new session.
+tmux new-session -d -s "$session_name" -n __bootstrap__
+tmux move-window -s "$window_id" -t "$session_name:"
+tmux kill-window -t "$session_name:__bootstrap__"
+tmux switch-client -t "$session_name"
