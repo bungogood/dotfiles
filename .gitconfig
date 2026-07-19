@@ -32,8 +32,8 @@
 	pop = stash pop
 	graph = log --oneline --decorate --graph
 	amend = commit --amend --no-edit
-	infer = !~/.local/scripts/git-infer
-	onto = !~/.local/scripts/git-onto
+	infer = !~/.local/scripts/git-infer.sh
+	onto = !~/.local/scripts/git-onto.sh
 
 [credential]
 	helper = cache
