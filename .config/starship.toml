@@ -1,5 +1,5 @@
 add_newline = false
-format = "$username$hostname $directory$git_branch$git_status$character"
+format = "$username$hostname $directory($git_branch )($git_status )$character"
 
 [username]
 show_always = true
@@ -19,11 +19,11 @@ format = "[$path]($style) "
 style = "none"
 
 [git_branch]
-format = '[\($branch\)]($style) '
+format = '[\($branch\)]($style)'
 style = "bright-red"
 
 [git_status]
-format = "[$all_status$ahead_behind]($style) "
+format = "[$all_status$ahead_behind]($style)"
 style = "bright-red"
 modified = "!"
 staged = "+"
