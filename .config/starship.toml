@@ -1,0 +1,39 @@
+add_newline = false
+format = "$username$hostname $directory$git_branch$git_status$character"
+
+[username]
+show_always = true
+format = "[$user]($style)"
+style_user = "bright-red"
+style_root = "bright-red"
+
+[hostname]
+ssh_only = false
+format = "@[$hostname]($style)"
+style = "cyan"
+
+[directory]
+truncation_length = 1
+truncate_to_repo = false
+format = "[$path]($style) "
+style = "none"
+
+[git_branch]
+format = '[\($branch\)]($style) '
+style = "bright-red"
+
+[git_status]
+format = "[$all_status$ahead_behind]($style) "
+style = "bright-red"
+modified = "!"
+staged = "+"
+untracked = "?"
+deleted = "x"
+renamed = ">"
+ahead = "^"
+behind = "v"
+diverged = "^v"
+
+[character]
+success_symbol = '\$'
+error_symbol = '[\$](bright-red)'
